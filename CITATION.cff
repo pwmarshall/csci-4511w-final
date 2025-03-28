@@ -1,0 +1,22 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: CSCI 4511W Final Project
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Peter
+    family-names: Marshall
+    email: pwmarshall@gmail.com
+  - given-names: Adam
+    family-names: Yaj
+    email: yaj00002@umn.edu
+repository-code: 'https://github.com/pwmarshall/csci-4511w-final'
+abstract: >-
+  The final project for our class CSCI 4511W at the
+  University of Minnesota. We combined multiple checkers
+  AIs/search algorithms and had them play each other to see
+  which was the best at checkers.
