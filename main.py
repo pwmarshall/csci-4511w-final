@@ -11,7 +11,7 @@ alexayzaleon@gmail.com
 
 from checkers.game import Game
 from checkers.player import Player
-from bots.checkersbot import CheckersBot
+from bots.minimaxbot import MiniMaxBot
 from bots.randombot import RandomBot
 from bots.user import User
 
@@ -19,11 +19,10 @@ from bots.user import User
 def main():
     """Game running example."""
 
-    # Pick both players, User or RandomBot require a Player parameter...
-    black_bot = CheckersBot(Player.black, 6)
-    # ...and CheckerBot does too. An optional parameter is an integer
-    # that represents the depth for the Bot. By default is 6.
-    white_bot = CheckersBot(Player.white, 6)
+    # Pick both players, User or RandomBot require a Player parameter. 
+    # MiniMax requires an additional depth parameter
+    black_bot = RandomBot(Player.black)
+    white_bot = MiniMaxBot(Player.white, 6)
 
     # Start Game class selecting how many games will be played.
     game = Game(10)

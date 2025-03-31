@@ -4,6 +4,8 @@
 alexayzaleon@gmail.com
 """
 
+from checkers.player import Player
+from checkers.board import Position
 
 class Piece:
     """Representation of a game piece in checkers.
@@ -21,21 +23,18 @@ class Piece:
 
     """
 
-    def __init__(self, row, col, player):
+    def __init__(self, position: Position, player: Player):
         """Initiates a piece.
 
         Parameters
         -----------
-        row : int
-            Row where the piece is located.
-        col : int
-            Column where the piece is located.
+        position : (row, col)
+            Where the piece is located.
         player : Player
             Player who owns the piece. It defines the color of the piece.
 
         """
-        self.row = row
-        self.col = col
+        self.position = position
         self.player = player
         self.king = False  # A piece is not a king by default
 
@@ -43,21 +42,18 @@ class Piece:
         """Turns the piece into a king."""
         self.king = True
 
-    def move(self, row, col):
+    def move(self, position: Position):
         """Moves the piece to a new position.
 
         Parameters
         -----------
-        row : int
-            Row of the new position.
-        col : int
-            Column of the new position.
-
+        position: Position
+            the new position
         """
-        self.row = row
-        self.col = col
+        self.position = position
 
-    def get_player(self):
+
+    def get_player(self) -> Player:
         """Gets the player, also known as the colour, that owns the piece.
 
         Returns

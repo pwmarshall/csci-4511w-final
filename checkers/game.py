@@ -10,6 +10,8 @@ from checkers.board import Board
 from checkers.player import Player
 from checkers.display import Display
 
+from datetime import datetime
+
 
 class Game:
     """Class that represents a number of games of checkers.
@@ -58,6 +60,9 @@ class Game:
             The player who would make the first move.
 
         """
+        last_time = datetime.now()
+        print(f"Starting simulation at {last_time.time()}")
+
         for _ in range(self.num_of_games):
             board = Board()
             self.display.assign_board(board)
@@ -90,6 +95,9 @@ class Game:
             elif winner == "Tie":
                 self.ties += 1
                 print("TIE")
+
+            print(f"Game {_} done, took {datetime.now() - last_time}")
+            last_time = datetime.now()
 
 
         print("White wins: " + str(self.white_wins))

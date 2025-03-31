@@ -13,9 +13,10 @@ alexayzaleon@gmail.com
 """
 
 import checkers.constants as constant
+from checkers.board import Board, Move, Position
 
 
-def translate_move(move):
+def translate_move(move: Position):
     row = str(constant.BOARD_DIMENSION - move[0])
     col = constant.COLUMNS_TO_LETTERS[move[1] + 1]
     return col + row
@@ -41,7 +42,7 @@ class User:
         """
         self.player = player
 
-    def select_move(self, board):
+    def select_move(self, board: Board):
         """Displays the possible moves and allows the user to select one.
 
         It gets all the valid moves from the board, then prints it into

@@ -12,6 +12,9 @@ import checkers.constants as constant
 from checkers.player import Player
 from checkers.piece import Piece
 
+type Position = tuple[int, int] #Position (row, col)
+
+type Move = tuple[Position, Position, list[Piece]] #Move (position, next_position, pieces_to_delete)
 
 class Board:
     """Represents a checkers board, with its pieces and moves.
@@ -46,7 +49,7 @@ class Board:
         self.board = self._initiate_board()
         self.moves = []
 
-    def evaluate(self, player):
+    def evaluate(self, player: Player):
         """Heuristic function that evaluates the current position.
 
         The evaluation method assign points for the following parameters:
@@ -104,7 +107,7 @@ class Board:
         else:
             return None
 
-    def get_all_valid_moves(self, player):
+    def get_all_valid_moves(self, player) -> list[Move]:
         """Gets all the valid moves that a player can do.
 
         Moves are shown with the format [
@@ -125,7 +128,7 @@ class Board:
             the pieces that get captured.
 
         """
-        moves = []  # Stores the possible moves
+        moves: list[Move] = []  # Stores the possible moves
         capture_move_exists = False  # Indicates if a capturing move is possible
 
         for piece in self.get_all_pieces(player):
@@ -149,7 +152,7 @@ class Board:
 
         return moves
 
-    def make_move(self, move):
+    def make_move(self, move: Move):
         """Executes a move in the board.
 
         Parameters
@@ -201,7 +204,7 @@ class Board:
         else:
             return None
 
-    def get_all_pieces(self, player):
+    def get_all_pieces(self, player) -> list[Piece]:
         """Gets all the pieces from a player in the board.
 
         Parameters
@@ -216,7 +219,7 @@ class Board:
             a player owns.
 
         """
-        pieces = []
+        pieces: list[Piece] = []
         for row in range(constant.BOARD_DIMENSION):
             for col in range(constant.BOARD_DIMENSION):
                 piece = self.get_piece((row, col))
@@ -224,7 +227,7 @@ class Board:
                     pieces.append(piece)
         return pieces
 
-    def get_piece(self, position):
+    def get_piece(self, position: Position):
         """Gets the piece located in a given position.
 
         Parameters
@@ -487,14 +490,14 @@ class Board:
 
         return moves
 
-    def _initiate_board(self):
+    def _initiate_board(self) -> list[list[Piece]]:
         """ Initiates a board based on the dimension and the rows of pieces set.
 
         To change the values of the board, look for a constants file.
 
         Returns
         --------
-        Player[][]
+        Piece[][]
             Matrix that represents the board. A gris is created
             and populated by pieces. If a position is occupied
             by a piece, it has the piece in it. If it is empty,
@@ -510,7 +513,7 @@ class Board:
                 if i < constant.ROWS_OF_PIECES:
                     # Black pieces
                     if (j + i) % 2 != 0:
-                        current_row.append(Piece(i, j, Player.black))
+                        current_row.append(Piece((i, j), Player.black))
                         self.num_black_pieces = self.num_black_pieces + 1
                     else:
                         current_row.append(None)
@@ -518,7 +521,7 @@ class Board:
                 elif i >= constant.BOARD_DIMENSION - constant.ROWS_OF_PIECES:
                     # White pieces
                     if (j + i) % 2 != 0:
-                        current_row.append(Piece(i, j, Player.white))
+                        current_row.append(Piece((i, j), Player.white))
                         self.num_white_pieces = self.num_white_pieces + 1
                     else:
                         current_row.append(None)

@@ -8,6 +8,9 @@ alexayzaleon@gmail.com
 
 from checkers.player import Player
 import checkers.constants as constant
+from checkers.board import Board
+
+import pygame
 
 
 class Display:
@@ -21,7 +24,7 @@ class Display:
 
     """
 
-    def __init__(self, board=None):
+    def __init__(self, pygame=False, board:Board=None):
         """Initiates the display with a board to show.
 
         Parameters
@@ -32,8 +35,11 @@ class Display:
 
         """
         self.board = board
+        self.pygame = pygame
+        if self.pygame:
+            pygame.init()
 
-    def assign_board(self, board):
+    def assign_board(self, board: Board):
         """Assigns a board to the display.
 
         Parameters
@@ -76,6 +82,16 @@ class Display:
         print("     ------------------------")
         print("      a  b  c  d  e  f  g  h ")
         print()
+
+    def update_board(self):
+        if not self.pygame:
+            return -1
+        for row in range(constant.BOARD_DIMENSION):
+            for col in range(constant.BOARD_DIMENSION):
+                piece = self.board.get_piece((row, col))
+
+        pygame.display.update()
+        
 
     def print_pieces_left(self):
         """Displays the number of pieces left on each side."""

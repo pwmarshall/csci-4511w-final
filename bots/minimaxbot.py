@@ -2,7 +2,7 @@
 
 #NOTE#
     To create your own heuristic function to evaluate a board state,
-    create a bot class that inherits CheckersBot and override the
+    create a bot class that inherits minimaxbot and override the
     _evaluate method implementing your own heuristic. In the current
     class, the evaluation function is the same as the Board class.
 
@@ -59,7 +59,7 @@ class Choice:
         return str(self.move) + ": " + str(self.value)
 
 
-class CheckersBot:
+class MiniMaxBot:
     """Bot that selects a move given a checkers board state.
 
     It is implemented with a minimax algorithm with
