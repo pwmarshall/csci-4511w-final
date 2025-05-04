@@ -51,3 +51,6 @@ COLUMNS_TO_LETTERS = {1: 'a',
                       7: 'g',
                       8: 'h'}
 """Used to translate the columns position to letters for user board reading."""
+
+PRINT_GAME = False
+PRINT_INFO = False

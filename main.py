@@ -11,8 +11,10 @@ alexayzaleon@gmail.com
 
 from checkers.game import Game
 from checkers.player import Player
+import checkers.constants as constant
 from bots.minimaxbot import MiniMaxBot
 from bots.randombot import RandomBot
+from bots.mctsbot import MCTSBot
 from bots.user import User
 
 
@@ -22,15 +24,15 @@ def main():
     # Pick both players, User or RandomBot require a Player parameter. 
     # MiniMax requires an additional depth parameter
     black_bot = RandomBot(Player.black)
-    white_bot = MiniMaxBot(Player.white, 6)
+    white_bot = MCTSBot(Player.white, 250)
 
     # Start Game class selecting how many games will be played.
-    game = Game(10)
+    game = Game(5)
 
     # Start the program indicating the white player, the black one,
     # a boolean that requests printing on the console (True prints
     # the board), and who will have the first turn.
-    game.simulate(white_bot, black_bot, False, Player.white)
+    game.simulate(white_bot, black_bot, constant.PRINT_GAME, Player.white)
 
 
 if __name__ == '__main__':

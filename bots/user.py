@@ -42,7 +42,7 @@ class User:
         """
         self.player = player
 
-    def select_move(self, board: Board):
+    def select_move(self, board: Board) -> Move:
         """Displays the possible moves and allows the user to select one.
 
         It gets all the valid moves from the board, then prints it into
@@ -68,12 +68,14 @@ class User:
             print(str(i) + ' : ' + translate_move(candidates[i][0]) + " to " + translate_move(candidates[i][1]))
 
         # Checks for the user selected move.
-        correct_input = False
-        while not correct_input:
+        while True:
             choice = input("Pick move: ")
-            if len(candidates) > int(choice) >= 0:
-                # Small test to avoid the program to crash on simple mistakes.
-                correct_input = True
+            try:
+                if len(candidates) > int(choice) >= 0:
+                    # Small test to avoid the program to crash on simple mistakes.
+                    break
+            except:
+                pass
 
         return candidates[int(choice)]
 

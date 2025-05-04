@@ -11,10 +11,9 @@ import random
 import checkers.constants as constant
 from checkers.player import Player
 from checkers.piece import Piece
+from checkers.display import Display
 
-type Position = tuple[int, int] #Position (row, col)
-
-type Move = tuple[Position, Position, list[Piece]] #Move (position, next_position, pieces_to_delete)
+from checkers.types import *
 
 class Board:
     """Represents a checkers board, with its pieces and moves.
@@ -38,7 +37,7 @@ class Board:
         Vector that holds all the past moves performed on the board.
     """
 
-    def __init__(self):
+    def __init__(self, board = None):
         """Creates a new board and sets it to a starting position."""
         # The starting counts are set to 0 and modified when the board is initiated.
         self.num_black_pieces = 0
@@ -46,7 +45,12 @@ class Board:
         self.num_white_pieces = 0
         self.num_white_kings = 0
         # Creates a new board and fills it with the appropriate pieces.
-        self.board = self._initiate_board()
+        if board:
+            self.board = board
+            self.num_black_pieces = len(self.get_all_pieces(Player.black))
+            self.num_white_pieces = len(self.get_all_pieces(Player.white))
+        else:
+            self.board = self._initiate_board()
         self.moves = []
 
     def evaluate(self, player: Player):
@@ -107,7 +111,7 @@ class Board:
         else:
             return None
 
-    def get_all_valid_moves(self, player) -> list[Move]:
+    def get_all_valid_moves(self, player: Player) -> list[Move]:
         """Gets all the valid moves that a player can do.
 
         Moves are shown with the format [
@@ -135,7 +139,7 @@ class Board:
             valid_moves = self._get_valid_moves(piece)
 
             for move, skip in valid_moves.items():
-                moves.append([(piece.row, piece.col), move, skip])
+                moves.append([(piece.position[0], piece.position[1]), move, skip])
 
                 if len(skip) > 0:
                     # Checks if there is a move that can capture a piece
@@ -169,21 +173,20 @@ class Board:
         eliminated_pieces = move[2]
 
         # Move the piece and eliminate the captured pieces
-        self.board[piece.row][piece.col] = None
+        self.board[piece.position[0]][piece.position[1]] = None
         self.board[row][col] = piece
-        piece.row = row
-        piece.col = col
+        piece.position = (row, col)
         self.remove(eliminated_pieces)
 
         # Checks if the piece has been promoted
         if piece.get_player() == Player.black and \
-                piece.row == constant.BOARD_DIMENSION - 1 \
+                piece.position[0] == constant.BOARD_DIMENSION - 1 \
                 and not piece.is_king():
             piece.make_king()
             self.num_black_kings += 1
 
         elif piece.get_player() == Player.white and \
-                piece.row == 0 \
+                piece.position[0] == 0 \
                 and not piece.is_king():
             piece.make_king()
             self.num_white_kings += 1
@@ -204,7 +207,7 @@ class Board:
         else:
             return None
 
-    def get_all_pieces(self, player) -> list[Piece]:
+    def get_all_pieces(self, player: Player) -> list[Piece]:
         """Gets all the pieces from a player in the board.
 
         Parameters
@@ -254,7 +257,7 @@ class Board:
 
         """
         for piece in pieces:
-            self.board[piece.row][piece.col] = None
+            self.board[piece.position[0]][piece.position[1]] = None
             if piece.get_player() is Player.white:
                 self.num_white_pieces -= 1
                 if piece.is_king():
@@ -297,6 +300,24 @@ class Board:
 
         """
         return self.num_black_pieces
+    
+    def get_num_pieces(self, player: Player):
+        """Gets the number of pieces for the player
+        
+        Parameters
+        ----------
+        player: Player - the player to get the num pieces for
+        
+        Returns
+        -------
+        int
+            Number of that player's pieces
+        """
+
+        if player == Player.white:
+            return self.num_white_pieces
+        else:
+            return self.num_black_pieces
 
     def repetition_happened(self):
         """Checks for a three-move repetition.
@@ -342,7 +363,7 @@ class Board:
 
         return passive_game
 
-    def _get_valid_moves(self, piece):
+    def _get_valid_moves(self, piece: Piece):
         """Gets all the valid moves for a piece.
 
         Parameters
@@ -358,9 +379,9 @@ class Board:
 
         """
         moves = {}
-        left = piece.col - 1  # Left position
-        right = piece.col + 1  # Right position
-        row = piece.row  # Current row
+        left = piece.position[1] - 1  # Left position
+        right = piece.position[1] + 1  # Right position
+        row = piece.position[0]  # Current row
 
         if piece.get_player() == Player.white or piece.is_king():
             # Checks the movements from the bottom to the top
@@ -595,17 +616,17 @@ class Board:
                 if piece.is_king():
                     evaluation += self._kings_distance(piece)
                 else:
-                    evaluation += constant.POSITIONAL_EVALUATION[piece.row][piece.col]
+                    evaluation += constant.POSITIONAL_EVALUATION[piece.position[0]][piece.position[1]]
             elif player is Player.black:
                 if piece.is_king():
                     evaluation += self._kings_distance(piece)
                 else:
-                    evaluation += constant.POSITIONAL_EVALUATION[constant.BOARD_DIMENSION-1-piece.row]\
-                        [constant.BOARD_DIMENSION-1-piece.col]
+                    evaluation += constant.POSITIONAL_EVALUATION[constant.BOARD_DIMENSION-1-piece.position[0]]\
+                        [constant.BOARD_DIMENSION-1-piece.position[1]]
 
         return evaluation
 
-    def _kings_distance(self, piece):
+    def _kings_distance(self, piece: Piece):
         """Calculates the points given by the distance of a king to other pieces.
 
         The formula is board_dimension (usually 8) - the distance.
@@ -627,7 +648,7 @@ class Board:
         min_distance = constant.BOARD_DIMENSION - 1
         opponent_pieces = self.get_all_pieces(piece.get_player().other)
         for opp_piece in opponent_pieces:
-            distance = abs(piece.row - opp_piece.row) + abs(piece.col - opp_piece.col) / 2
+            distance = abs(piece.position[0] - opp_piece.position[0]) + abs(piece.position[1] - opp_piece.position[1]) / 2
             if distance < min_distance:
                 min_distance = distance
 
@@ -644,3 +665,164 @@ class Board:
         dp.num_white_kings = copy.deepcopy(self.num_white_kings)
         dp.num_black_kings = copy.deepcopy(self.num_black_kings)
         return dp
+    
+class Board_State():
+    def __init__(self, board, parentMove: Move = None):
+        #These values are just initial values that don't matter in the functions
+        self.board = board #arr
+        # self.options1, self.options2 = CanMove(self.board)
+        # self.options = self.options1 + self.options2
+        self.parentMove = parentMove
+
+    def find_children(self, board):
+        children = set()
+        #Update the options
+        board_copy = copy.deepcopy(board)
+        
+        boardObj = Board(board_copy)
+        options1 = boardObj.get_all_valid_moves(Player.white)
+        for option in options1:
+            board_copy = boardObj.__deepcopy__()
+            board_copy.make_move(option)
+            children.add(Board_State(board_copy.board, option))
+        return children
+
+    def find_oppchildren(self,board):
+        children = set()
+        board_copy = copy.deepcopy(board)
+        
+        boardObj = Board(board_copy)
+        options2 = boardObj.get_all_valid_moves(Player.black)
+        for option in options2:
+            board_copy = boardObj.__deepcopy__()
+            board_copy.make_move(option)
+            children.add(Board_State(board_copy.board))
+        return children
+
+
+    def find_random_child(self, board):
+        board_copy = copy.deepcopy(board)
+        
+        boardObj = Board(board_copy)
+        options1 = boardObj.get_all_valid_moves(Player.white)
+        choice = random.choice(options1)
+        boardObj.make_move(choice)
+
+        if not self.is_terminal(boardObj.board):
+            options2 = boardObj.get_all_valid_moves(Player.black)
+            choice = random.choice(options2)
+            boardObj.make_move(choice)
+
+        return Board_State(boardObj.board)
+
+    def is_terminal(self,board):
+        board_copy = copy.deepcopy(board)
+        boardObj = Board(board_copy)
+
+        if boardObj.has_winner():
+            return True
+        return False
+
+    def reward(self,board):        
+        boardObj = Board(board)
+        # Display(False, boardObj).print_board()
+        # print(boardObj.get_num_black_pieces())
+        # print(boardObj.get_num_white_pieces())
+        winner = boardObj.has_winner()
+        if winner is Player.white:
+            return 1
+        elif winner is Player.black:
+            return -1
+        else:
+            print("Tie Instance")
+            return 0
+        
+class BoardHash(Board):
+    def __init__(self, board: Board = None):
+        super().__init__(board.board if board else None)
+        self.parent_move: Move
+        pass
+
+    def find_children(self, player: Player):
+        children: set[BoardHash] = set()
+        #Update the options
+        self.options = self.get_all_valid_moves(player)
+        for move in self.options:
+            child = self.simulate_move(move)
+            children.add(child)
+        return children
+
+    def find_random_child(self, player: Player):
+        
+        options = self.get_all_valid_moves(player)
+        move = random.choice(options)
+        new_board = self.simulate_move(move)
+
+        if not new_board.is_terminal():
+            options = new_board.get_all_valid_moves(player.other)
+            move = random.choice(options)
+            new_board = new_board.simulate_move(move)
+
+        return new_board
+
+    def is_terminal(self):
+        if len(self.get_all_valid_moves(Player.white)) == 0 or len(self.get_all_valid_moves(Player.black)) == 0:
+            return True
+        else:
+            return False
+
+    def reward(self, player: Player):
+        #1 if won, 0 if lost
+        if self.get_num_pieces(player) > 0 and self.get_num_pieces(player.other) == 0:
+            return 1
+        elif self.get_num_pieces(player) == 0 and self.get_num_pieces(player.other) > 0:
+            return 0
+        else:
+            #Tie instances shouldn't really be a thing
+            #Someone is winning
+            #print("Tie Instance")
+            return .5
+        
+    def __deepcopy__(self, memodict={}):
+        """Deep-copies the board object."""
+        dp = BoardHash()
+        dp.board = copy.deepcopy(self.board)
+        dp.moves = copy.deepcopy(self.moves)
+        dp.num_white_pieces = copy.deepcopy(self.num_white_pieces)
+        dp.num_black_pieces = copy.deepcopy(self.num_black_pieces)
+        dp.num_white_kings = copy.deepcopy(self.num_white_kings)
+        dp.num_black_kings = copy.deepcopy(self.num_black_kings)
+        return dp
+        
+    def simulate_move(self, move: Move):
+        new_board = self.__deepcopy__()
+        new_board.make_move(move)
+        new_board.parent_move = move
+        return new_board
+
+    def hash(self):
+        """
+        Replace all white pieces with 1, white kings with 2 and black pieces with -1 and black kings with -2.
+        Also makes the 2d board array into a 1d array
+        
+        Returns
+        -------
+        Array of state of game
+
+        """
+
+        hashArr: list[int] = []
+    
+        for x in range(constant.BOARD_DIMENSION):
+            for y in range(constant.BOARD_DIMENSION):
+                piece = self.get_piece((x, y))
+                if piece.get_player() == Player.white and piece.is_king():
+                    hashArr.append(2)
+                elif piece.get_player() == Player.white and not piece.is_king():
+                    hashArr.append(1)
+                elif piece.get_player() == Player.black and not piece.is_king():
+                    hashArr.append(-1)
+                elif piece.get_player() == Player.black and piece.is_king():
+                    hashArr.append(-2)
+
+        return hashArr

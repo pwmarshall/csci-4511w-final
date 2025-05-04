@@ -8,7 +8,7 @@ alexayzaleon@gmail.com
 
 from checkers.player import Player
 import checkers.constants as constant
-from checkers.board import Board
+# from checkers.board import Board
 
 import pygame
 
@@ -24,7 +24,7 @@ class Display:
 
     """
 
-    def __init__(self, pygame=False, board:Board=None):
+    def __init__(self, pygame=False, board=None):
         """Initiates the display with a board to show.
 
         Parameters
@@ -39,7 +39,7 @@ class Display:
         if self.pygame:
             pygame.init()
 
-    def assign_board(self, board: Board):
+    def assign_board(self, board):
         """Assigns a board to the display.
 
         Parameters

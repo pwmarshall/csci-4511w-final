@@ -5,17 +5,15 @@ alexayzaleon@gmail.com
 """
 
 from checkers.player import Player
-from checkers.board import Position
+from checkers.types import *
 
 class Piece:
     """Representation of a game piece in checkers.
 
     Attributes
     -----------
-    row : int
-        Row where the piece is located.
-    col : int
-        Column where the piece is located.
+    position : (row, col)
+        Where the piece is located.
     player : Player
         Player who owns the piece. It defines the color of the piece.
     king : boolean

@@ -11,6 +11,7 @@ alexayzaleon@gmail.com
 """
 import copy
 from datetime import datetime
+from checkers.board import Board
 
 
 class Choice:
@@ -94,7 +95,7 @@ class MiniMaxBot:
         self.player = player
         self.depth = depth
 
-    def alpha_beta_search(self, board, is_max, current_player, depth, alpha, beta):
+    def alpha_beta_search(self, board: Board, is_max, current_player, depth, alpha, beta):
         """Minimax algorithm with alpha beta pruning.
 
         Searches through all the options in the depth selected,
@@ -137,8 +138,7 @@ class MiniMaxBot:
         candidates = board.get_all_valid_moves(current_player)
         for i in range(len(candidates)):
             move = candidates[i]
-            new_board = copy.deepcopy(board)
-            new_board.make_move(move)
+            new_board = board.simulate_move(move)
             result = self.alpha_beta_search(new_board, not is_max, current_player.other, depth + 1, alpha, beta)
             result.move = new_board.last_move()
 

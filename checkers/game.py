@@ -6,9 +6,12 @@ It bridges the game state (Board) with the AI (Bots or User).
 alexayzaleon@gmail.com
 """
 
-from checkers.board import Board
+from checkers.board import Board, BoardHash
 from checkers.player import Player
 from checkers.display import Display
+from bots.bot import Bot
+from bots.mctsbot import MCTSBot
+import checkers.constants as constant
 
 from datetime import datetime
 
@@ -44,7 +47,7 @@ class Game:
         self.ties = 0
         self.display = Display()
 
-    def simulate(self, bot_white, bot_black, print_game=False, starting_player=Player.white):
+    def simulate(self, bot_white: Bot, bot_black: Bot, print_game=constant.PRINT_GAME, starting_player=Player.white):
         """Simulates a number of games by two agents.
 
         Parameters
@@ -64,7 +67,11 @@ class Game:
         print(f"Starting simulation at {last_time.time()}")
 
         for _ in range(self.num_of_games):
-            board = Board()
+            board = BoardHash()
+            if isinstance(bot_white, MCTSBot):
+                bot_white.reset_tree()
+            if isinstance(bot_black, MCTSBot):
+                bot_black.reset_tree()
             self.display.assign_board(board)
 
             current_turn = starting_player
@@ -72,10 +79,16 @@ class Game:
             while winner is None:
                 choice = []
                 if current_turn == Player.white:
+                    if print_game: print("White Turn")
                     choice = bot_white.select_move(board)
+                    if print_game: print(f"White choose: ({choice[0][0]}, {choice[0][1]}) to ({choice[1][0]}, {choice[1][1]})")
                 else:
+                    if print_game: print("Black Turn")
                     choice = bot_black.select_move(board)
+                    if print_game: print(f"Black choose: ({choice[0][0]}, {choice[0][1]}) to ({choice[1][0]}, {choice[1][1]})")
+
                 board.make_move(choice)
+                self.display.assign_board(board)
 
                 winner = board.has_winner()
 
