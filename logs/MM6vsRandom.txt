@@ -1,0 +1,106 @@
+pygame 2.6.1 (SDL 2.28.4, Python 3.13.2)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+Starting simulation at 15:33:29.648325
+Black WIN
+Game 0 done, took 0:01:54.869170
+Black WIN
+Game 1 done, took 0:00:36.914271
+Black WIN
+Game 2 done, took 0:00:18.949860
+Black WIN
+Game 3 done, took 0:00:22.502034
+Black WIN
+Game 4 done, took 0:00:45.710503
+TIE
+Game 5 done, took 0:03:06.112033
+Black WIN
+Game 6 done, took 0:00:42.888861
+Black WIN
+Game 7 done, took 0:00:29.833279
+Black WIN
+Game 8 done, took 0:00:31.680197
+Black WIN
+Game 9 done, took 0:01:14.568148
+TIE
+Game 10 done, took 0:03:00.951619
+Black WIN
+Game 11 done, took 0:00:48.055825
+Black WIN
+Game 12 done, took 0:00:14.816461
+Black WIN
+Game 13 done, took 0:00:30.230989
+Black WIN
+Game 14 done, took 0:00:49.525298
+Black WIN
+Game 15 done, took 0:00:50.989770
+Black WIN
+Game 16 done, took 0:00:28.702488
+Black WIN
+Game 17 done, took 0:00:39.192466
+TIE
+Game 18 done, took 0:02:19.672040
+Black WIN
+Game 19 done, took 0:00:58.711246
+Black WIN
+Game 20 done, took 0:00:19.294737
+Black WIN
+Game 21 done, took 0:00:26.272366
+Black WIN
+Game 22 done, took 0:00:52.372771
+Black WIN
+Game 23 done, took 0:00:20.169268
+Black WIN
+Game 24 done, took 0:00:38.344804
+Black WIN
+Game 25 done, took 0:00:44.037185
+Black WIN
+Game 26 done, took 0:00:37.559721
+Black WIN
+Game 27 done, took 0:00:35.359503
+Black WIN
+Game 28 done, took 0:00:24.197922
+TIE
+Game 29 done, took 0:02:41.767019
+Black WIN
+Game 30 done, took 0:00:45.830563
+Black WIN
+Game 31 done, took 0:00:19.695852
+Black WIN
+Game 32 done, took 0:01:18.021715
+Black WIN
+Game 33 done, took 0:00:50.362987
+Black WIN
+Game 34 done, took 0:00:17.761171
+Black WIN
+Game 35 done, took 0:02:59.317364
+White WIN
+Game 36 done, took 0:00:18.281465
+Black WIN
+Game 37 done, took 0:00:56.865364
+Black WIN
+Game 38 done, took 0:00:29.447476
+Black WIN
+Game 39 done, took 0:01:14.222531
+Black WIN
+Game 40 done, took 0:00:33.842039
+Black WIN
+Game 41 done, took 0:00:47.892365
+Black WIN
+Game 42 done, took 0:02:29.536492
+Black WIN
+Game 43 done, took 0:00:18.372961
+White WIN
+Game 44 done, took 0:00:48.992087
+Black WIN
+Game 45 done, took 0:00:39.162746
+White WIN
+Game 46 done, took 0:00:28.648715
+Black WIN
+Game 47 done, took 0:00:24.538912
+Black WIN
+Game 48 done, took 0:00:37.665084
+Black WIN
+Game 49 done, took 0:00:18.401643
+White wins: 3
+Black wins: 43
+Ties: 4

@@ -23,11 +23,11 @@ def main():
 
     # Pick both players, User or RandomBot require a Player parameter. 
     # MiniMax requires an additional depth parameter
-    black_bot = RandomBot(Player.black)
-    white_bot = MCTSBot(Player.white, 250)
+    black_bot = MiniMaxBot(Player.black, 7)
+    white_bot = MCTSBot(Player.white, 200)
 
     # Start Game class selecting how many games will be played.
-    game = Game(5)
+    game = Game(50)
 
     # Start the program indicating the white player, the black one,
     # a boolean that requests printing on the console (True prints
